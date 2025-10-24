@@ -13,8 +13,8 @@ public class XRPlane : MonoBehaviour
     public float acceleration = 10f;
     public float moveSpeed;
 
-    public float boostMultiplier = 2f;
-    public float boostDuration = 2f;
+    public float boostMultiplier = 7f;
+    public float boostDuration = 5f;
 
     private Rigidbody rb;
     private Vector2 moveInput;
@@ -72,6 +72,8 @@ public class XRPlane : MonoBehaviour
         {
             isBoosting = true;
             boostTimer = boostDuration;
+            Debug.Log("Boost activated!");
+
         }
     }
     //public void OnThrottleIncrease(InputAction.CallbackContext context) //type - button
@@ -113,6 +115,7 @@ public class XRPlane : MonoBehaviour
             if (boostTimer <= 0f)
             {
                 isBoosting = false;
+                Debug.Log("Boost ended!");
             }
         }
 
@@ -139,8 +142,9 @@ public class XRPlane : MonoBehaviour
 
 
         float effectiveMaxSpeed = isBoosting ? maxSpeed * boostMultiplier : maxSpeed;  //*
+        float targetSpeed = Mathf.Clamp(yawInput.y, -1f, 1f) * effectiveMaxSpeed;
 
-        float targetSpeed = Mathf.Clamp(yawInput.y, -1f, 1f) * maxSpeed;  //* (ось X правого стика геймпада или стрелки влево/вправо)
+        //float targetSpeed = Mathf.Clamp(yawInput.y, -1f, 1f) * maxSpeed;  //* (ось X правого стика геймпада или стрелки влево/вправо)
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.fixedDeltaTime); //*
 
 

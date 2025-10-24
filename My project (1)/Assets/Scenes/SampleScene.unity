@@ -1635,8 +1635,8 @@ MonoBehaviour:
   maxSpeed: 100
   acceleration: 10
   moveSpeed: 0
-  boostMultiplier: 2
-  boostDuration: 2
+  boostMultiplier: 7
+  boostDuration: 5
   verticalSpeed: 20
   verticalAcceleration: 5
   maxVerticalSpeed: 30
