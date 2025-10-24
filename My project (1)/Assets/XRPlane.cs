@@ -19,12 +19,14 @@ public class XRPlane : MonoBehaviour
     private Rigidbody rb;
     private Vector2 moveInput;
     private Vector2 yawInput;
+    
+    //private Vector2 pitchroll;
     //private bool isFiring;
     private bool isBoosting;
     private float boostTimer;
     private float currentSpeed;
 
-    //private bool engineStarted = false; // Добавляем флаг запуска двигателя
+    //private bool engineStarted = false; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 
 
@@ -38,31 +40,65 @@ public class XRPlane : MonoBehaviour
     public float verticalAcceleration = 5f;
     public float maxVerticalSpeed = 30f;
     private float currentVerticalSpeed;
+    
+    
+    
+    [SerializeField] InputActionReference pitchroll;
+    [SerializeField] InputActionReference yaw;
+    [SerializeField] InputActionReference speed;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
+    public void Move1()
+    {
+        Debug.Log(pitchroll.action.ReadValue<Vector2>());
+        moveInput = pitchroll.action.ReadValue<Vector2>();
+        
+    }
+
+    public void Yaw()
+    {
+        Debug.Log(yaw.action.ReadValue<Vector2>());
+        yawInput = yaw.action.ReadValue<Vector2>();
+        
+    }
+
+    public void Speed()
+    {
+        // if (pitchroll.action.performed && !isBoosting)
+        // {
+        //     isBoosting = true;
+        //     boostTimer = boostDuration;
+        //     Debug.Log("Boost activated!");
+        //
+        // }
+    }
+
     public void OnMoveInput(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+        Debug.Log("move!");
+        
 
     }
     public void OnYawInput(InputAction.CallbackContext context)
     {
         yawInput = context.ReadValue<Vector2>();
+        Debug.Log("yaw!");
 
     }
-    // Добавляем метод для запуска/остановки двигателя
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     //public void OnEngineToggle(InputAction.CallbackContext context)
     //{
     //    if (context.performed)
     //    {
-    //        engineStarted = !engineStarted; // Переключаем состояние двигателя
+    //        engineStarted = !engineStarted; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     //        if (!engineStarted)
     //        {
-    //            currentSpeed = 0f; // При выключении сбрасываем скорость
-    //            rb.velocity = Vector3.zero; // Останавливаем самолет
+    //            currentSpeed = 0f; // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    //            rb.velocity = Vector3.zero; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     //        }
     //    }
     //}
@@ -100,9 +136,11 @@ public class XRPlane : MonoBehaviour
 
     void FixedUpdate()
     {
-        float pitch = -moveInput.y * pitchSensitivity * Time.fixedDeltaTime; //наклон вверх,вниз
-        float roll = -moveInput.x * rollSensitivity * Time.fixedDeltaTime; // (наклон крыльев)
-        float yaw = yawInput.x * yawSensitivity * Time.fixedDeltaTime; //Поворот самолета вокруг вертикальной оси
+        Move1();
+        Yaw();
+        float pitch = -moveInput.y * pitchSensitivity * Time.fixedDeltaTime; //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ,пїЅпїЅпїЅпїЅ
+        float roll = -moveInput.x * rollSensitivity * Time.fixedDeltaTime; // (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
+        float yaw = yawInput.x * yawSensitivity * Time.fixedDeltaTime; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
         Quaternion rotationChange = Quaternion.Euler(pitch, yaw, roll);
         rb.MoveRotation(rb.rotation * rotationChange);
 
@@ -123,8 +161,8 @@ public class XRPlane : MonoBehaviour
         //{
         //    float effectiveMaxSpeed = isBoosting ? maxSpeed * boostMultiplier : maxSpeed;
 
-        //    // Регулировка скорости вперед (yawInput.y от -1 до 1)
-        //    // -1 = медленно, 0 = нормально, +1 = быстро
+        //    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (yawInput.y пїЅпїЅ -1 пїЅпїЅ 1)
+        //    // -1 = пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, 0 = пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, +1 = пїЅпїЅпїЅпїЅпїЅпїЅ
         //    float speedMultiplier = Mathf.Clamp(yawInput.y + 1f, 0f, 2f) * 0.5f;
         //    float targetSpeed = speedMultiplier * effectiveMaxSpeed;
 
@@ -133,7 +171,7 @@ public class XRPlane : MonoBehaviour
         //}
         //else
         //{
-        //    // Двигатель выключен - останавливаем самолет
+        //    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         //    rb.velocity = Vector3.zero;
         //    currentSpeed = 0f;
         //}
@@ -144,7 +182,7 @@ public class XRPlane : MonoBehaviour
         float effectiveMaxSpeed = isBoosting ? maxSpeed * boostMultiplier : maxSpeed;  //*
         float targetSpeed = Mathf.Clamp(yawInput.y, -1f, 1f) * effectiveMaxSpeed;
 
-        //float targetSpeed = Mathf.Clamp(yawInput.y, -1f, 1f) * maxSpeed;  //* (ось X правого стика геймпада или стрелки влево/вправо)
+        //float targetSpeed = Mathf.Clamp(yawInput.y, -1f, 1f) * maxSpeed;  //* (пїЅпїЅпїЅ X пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅ)
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.fixedDeltaTime); //*
 
 
@@ -153,11 +191,11 @@ public class XRPlane : MonoBehaviour
         //float targetVerticalSpeed = moveInput.y * maxVerticalSpeed;
         //currentVerticalSpeed = Mathf.MoveTowards(currentVerticalSpeed, targetVerticalSpeed, verticalAcceleration * Time.fixedDeltaTime);
 
-        ////// Комбинируем горизонтальное и вертикальное движение
+        ////// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         //Vector3 forwardMovement = transform.forward * (currentSpeed * Time.fixedDeltaTime * thrustPower);
         //Vector3 verticalMovement = transform.up * (currentVerticalSpeed * Time.fixedDeltaTime);
 
-        ////// Применяем общее движение
+        ////// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         //rb.velocity = forwardMovement + verticalMovement;
         rb.velocity = transform.forward * (currentSpeed * Time.fixedDeltaTime * thrustPower); //*
 

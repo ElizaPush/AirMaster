@@ -192,8 +192,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 95664135}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1176, z: 0}
+  m_LocalRotation: {x: -0.010675007, y: 0.765041, z: 0.012685961, w: 0.64376813}
+  m_LocalPosition: {x: 0.02, y: -0.04, z: -0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -201,7 +201,7 @@ Transform:
   - {fileID: 1584840130}
   - {fileID: 624063924}
   m_Father: {fileID: 1367527066}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -1.9, y: 99.84, z: 0}
 --- !u!1 &430477248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1525,13 +1525,13 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3073974654154634581, guid: 75e04e7faad705a4f97c2078eba16fbe, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 740565116}
-    - targetCorrespondingSourceObject: {fileID: 3073974654154634581, guid: 75e04e7faad705a4f97c2078eba16fbe, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 740565115}
     - targetCorrespondingSourceObject: {fileID: 3073974654154634581, guid: 75e04e7faad705a4f97c2078eba16fbe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 740565119}
+    - targetCorrespondingSourceObject: {fileID: 3073974654154634581, guid: 75e04e7faad705a4f97c2078eba16fbe, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 740565121}
   m_SourcePrefab: {fileID: 100100000, guid: 75e04e7faad705a4f97c2078eba16fbe, type: 3}
 --- !u!1 &740565114 stripped
 GameObject:
@@ -1545,7 +1545,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 740565114}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
@@ -1565,10 +1565,10 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 740565116}
+      - m_Target: {fileID: 740565121}
         m_TargetAssemblyTypeName: XRPlane, Assembly-CSharp
-        m_MethodName: OnMoveInput
-        m_Mode: 0
+        m_MethodName: 
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1581,10 +1581,10 @@ MonoBehaviour:
     m_ActionName: Controls/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 740565116}
+      - m_Target: {fileID: 740565121}
         m_TargetAssemblyTypeName: XRPlane, Assembly-CSharp
-        m_MethodName: OnYawInput
-        m_Mode: 0
+        m_MethodName: 
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1597,7 +1597,7 @@ MonoBehaviour:
     m_ActionName: Controls/Yaw
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 740565116}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: XRPlane, Assembly-CSharp
         m_MethodName: OnBoostInput
         m_Mode: 0
@@ -1616,30 +1616,6 @@ MonoBehaviour:
   m_DefaultActionMap: Controls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &740565116
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 740565114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 795c9caafaf0433419a46e553ba814b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pitchSensitivity: 30
-  rollSensitivity: 30
-  yawSensitivity: 20
-  thrustPower: 50
-  maxSpeed: 100
-  acceleration: 10
-  moveSpeed: 0
-  boostMultiplier: 7
-  boostDuration: 5
-  verticalSpeed: 20
-  verticalAcceleration: 5
-  maxVerticalSpeed: 30
 --- !u!4 &740565117 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5588286365134245300, guid: 75e04e7faad705a4f97c2078eba16fbe, type: 3}
@@ -1663,6 +1639,33 @@ MonoBehaviour:
   sensitivity: 6
   turbulenceThreshold: 10
   maxVibration: 1
+--- !u!114 &740565121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740565114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 795c9caafaf0433419a46e553ba814b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pitchSensitivity: 30
+  rollSensitivity: 30
+  yawSensitivity: 20
+  thrustPower: 50
+  maxSpeed: 100
+  acceleration: 10
+  moveSpeed: 0
+  boostMultiplier: 7
+  boostDuration: 5
+  verticalSpeed: 20
+  verticalAcceleration: 5
+  maxVerticalSpeed: 30
+  pitchroll: {fileID: -8974202337825472549, guid: 639975b1135535f4b9ccba975fea751b, type: 3}
+  yaw: {fileID: -4123679856312366389, guid: 639975b1135535f4b9ccba975fea751b, type: 3}
+  speed: {fileID: 3057308506416122365, guid: 639975b1135535f4b9ccba975fea751b, type: 3}
 --- !u!1001 &795155769
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1738,6 +1741,7 @@ GameObject:
   - component: {fileID: 1367527064}
   - component: {fileID: 1367527068}
   - component: {fileID: 1367527069}
+  - component: {fileID: 1367527070}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: Untagged
@@ -1785,7 +1789,7 @@ Transform:
   m_GameObject: {fileID: 1367527063}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.002, y: 0.081, z: 2.733}
+  m_LocalPosition: {x: 0.002, y: 0.081, z: 2.7329998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1831,9 +1835,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af6bf904e410ee8479f9093d8830d1f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LocomotionProvider: {fileID: 0}
+  m_LocomotionProvider: {fileID: 1367527070}
   m_MinHeight: 0
   m_MaxHeight: Infinity
+--- !u!114 &1367527070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367527063}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bf296fc962d7184ab14ad1841598d5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_System: {fileID: 0}
+  m_MoveSpeed: 1
+  m_EnableStrafe: 1
+  m_EnableFly: 0
+  m_UseGravity: 1
+  m_GravityApplicationMode: 0
+  m_ForwardSource: {fileID: 0}
+  m_LeftHandMoveAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Left Hand Move
+      m_Type: 0
+      m_ExpectedControlType: Vector2
+      m_Id: 3f9b657b-0a3b-47d1-a74f-d3aaebd39e33
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_RightHandMoveAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Right Hand Move
+      m_Type: 0
+      m_ExpectedControlType: Vector2
+      m_Id: 0b40126a-4122-4b07-98cc-421669a26697
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
 --- !u!1001 &1571962448
 PrefabInstance:
   m_ObjectHideFlags: 0
