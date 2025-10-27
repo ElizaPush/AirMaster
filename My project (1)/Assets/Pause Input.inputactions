@@ -1,0 +1,34 @@
+{
+    "name": "Pause Input",
+    "maps": [
+        {
+            "name": "Menu",
+            "id": "d8fe9a9b-a0c3-4030-8578-34a132444e6e",
+            "actions": [
+                {
+                    "name": "Menu Press",
+                    "type": "Button",
+                    "id": "abe9f3cb-9997-4ce9-ba3d-16f18e123b0d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "01b819ea-bdba-4aae-a5b1-12d4767e7215",
+                    "path": "<XRController>{RightHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Menu Press",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

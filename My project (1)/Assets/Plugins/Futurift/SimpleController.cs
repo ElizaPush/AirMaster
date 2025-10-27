@@ -37,6 +37,15 @@ namespace Futurift
         public float maxVibration = 1.0f;
         private Vector3 lastRotation;
 
+        private float lastSpeed;
+        private float accelPitchOffset;
+        private float smoothedAccelTilt;
+
+        public float accelerationSensitivity = 0.6f;
+        public float maxAccelerationTilt = 6f;
+        [Range(0f, 1f)] public float accelerationSmooth = 0.8f;
+
+
         private void Update()
         {
 
@@ -69,8 +78,26 @@ namespace Futurift
                     rot.z = Mathf.Clamp(rot.z, -maxAngle, maxAngle);
             }
 
+            // === вычисление ускорения ===
+            float currentSpeed = GetComponent<Rigidbody>() ? GetComponent<Rigidbody>().velocity.magnitude : 0f;
+            float acceleration = (currentSpeed - lastSpeed) / Time.deltaTime;
+            lastSpeed = currentSpeed;
+
+            float accelTilt = Mathf.Clamp(-Mathf.Pow(Mathf.Abs(acceleration), 0.7f) * Mathf.Sign(acceleration) * accelerationSensitivity, -maxAccelerationTilt, maxAccelerationTilt);
+            smoothedAccelTilt = Mathf.Lerp(smoothedAccelTilt, accelTilt, 1f - accelerationSmooth);
+
+            float totalPitch = -rot.x - smoothedAccelTilt;
+            //float totalPitch = -rot.x + smoothedAccelTilt;
+            // === отклонение капсулы при ускорении ===
+            //accelPitchOffset = Mathf.Lerp(accelPitchOffset, Mathf.Clamp(-acceleration * 0.2f, -10f, 10f), 0.1f);
+            //float finalPitch = Mathf.Clamp(-rot.x + accelPitchOffset, -maxAngle, maxAngle);
+
+
             //  Отправляем данные в капсулу 
-            _controller.Pitch = -rot.x; //_controller.Pitch = -rot.x;
+            _controller.Pitch = totalPitch;
+
+            //  Отправляем данные в капсулу 
+            //_controller.Pitch = -rot.x; //_controller.Pitch = -rot.x;
             _controller.Roll = rot.z;
 
 

@@ -13,7 +13,7 @@ public class XRPlane : MonoBehaviour
     public float acceleration = 10f;
     public float moveSpeed;
 
-    public float boostMultiplier = 7f;
+    public float boostMultiplier = 5f;
     public float boostDuration = 5f;
 
     private Rigidbody rb;
@@ -40,15 +40,45 @@ public class XRPlane : MonoBehaviour
     public float verticalAcceleration = 5f;
     public float maxVerticalSpeed = 30f;
     private float currentVerticalSpeed;
-    
-    
-    
+
+    [SerializeField] AudioSource engineAudio;
+    [SerializeField] AudioSource boostAudio;
+
+    public float minPitch = 0.8f;
+    public float maxPitch = 2.0f;
+    public float minVolume = 0.1f;
+    public float maxVolume = 0.6f;
+
+
+
     [SerializeField] InputActionReference pitchroll;
     [SerializeField] InputActionReference yaw;
     [SerializeField] InputActionReference speed;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        if (engineAudio == null)
+            engineAudio = GetComponent<AudioSource>();
+        if (engineAudio != null)
+        {
+            engineAudio.loop = true;
+            engineAudio.playOnAwake = true;
+            if (!engineAudio.isPlaying) engineAudio.Play();
+        }
+    }
+
+    void OnEnable()
+    {
+        pitchroll.action.Enable();
+        yaw.action.Enable();
+        speed.action.Enable();
+    }
+
+    void OnDisable()
+    {
+        pitchroll.action.Disable();
+        yaw.action.Disable();
+        speed.action.Disable();
     }
 
     public void Move1()
@@ -67,6 +97,13 @@ public class XRPlane : MonoBehaviour
 
     public void Speed()
     {
+        if (speed.action.WasPerformedThisFrame() && !isBoosting)
+        {
+            isBoosting = true;
+            boostTimer = boostDuration;
+            Debug.Log("Boost activated!");
+            if (boostAudio != null) boostAudio.Play();
+        }
         // if (pitchroll.action.performed && !isBoosting)
         // {
         //     isBoosting = true;
@@ -138,6 +175,7 @@ public class XRPlane : MonoBehaviour
     {
         Move1();
         Yaw();
+        Speed();
         float pitch = -moveInput.y * pitchSensitivity * Time.fixedDeltaTime; //������ �����,����
         float roll = -moveInput.x * rollSensitivity * Time.fixedDeltaTime; // (������ �������)
         float yaw = yawInput.x * yawSensitivity * Time.fixedDeltaTime; //������� �������� ������ ������������ ���
@@ -147,6 +185,7 @@ public class XRPlane : MonoBehaviour
         //rb.AddForce(transform.up * maxThrust * throttle);
         //rb.AddForce(Vector3.up * rb.velocity.magnitude * lift);
 
+        //ускорение
         if (isBoosting)
         {
             boostTimer -= Time.fixedDeltaTime;
@@ -198,6 +237,13 @@ public class XRPlane : MonoBehaviour
         ////// ��������� ����� ��������
         //rb.velocity = forwardMovement + verticalMovement;
         rb.velocity = transform.forward * (currentSpeed * Time.fixedDeltaTime * thrustPower); //*
+
+        if (engineAudio)
+        {
+            float t = Mathf.InverseLerp(-effectiveMaxSpeed, effectiveMaxSpeed, currentSpeed);
+            engineAudio.pitch = Mathf.Lerp(minPitch, maxPitch, t);
+            engineAudio.volume = Mathf.Lerp(minVolume, maxVolume, t);
+        }
 
     }
 
