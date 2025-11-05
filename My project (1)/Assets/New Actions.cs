@@ -117,6 +117,15 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""0c768238-eb16-49df-9728-66bc114dbdae"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -233,10 +242,10 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""52fa779e-2ba9-43ca-9419-a1822b58189b"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";keyboard"",
                     ""action"": ""Yaw"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -244,10 +253,10 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""78fe5d7b-8f9e-4e5c-b96b-5572ab1b11ab"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";keyboard"",
                     ""action"": ""Yaw"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -273,6 +282,28 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
                     ""action"": ""SpeedUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6757157-48b0-4b45-a572-71c379615e47"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";keyboard"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0fc608af-5803-45d3-ac97-404b63d46010"",
+                    ""path"": ""<XRController>{LeftHand}/{SecondaryButton}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";xr controller"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -295,6 +326,7 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         m_Controls_Move = m_Controls.FindAction("Move", throwIfNotFound: true);
         m_Controls_Yaw = m_Controls.FindAction("Yaw", throwIfNotFound: true);
         m_Controls_SpeedUp = m_Controls.FindAction("SpeedUp", throwIfNotFound: true);
+        m_Controls_Attack = m_Controls.FindAction("Attack", throwIfNotFound: true);
     }
 
     ~@NewActions()
@@ -378,6 +410,7 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Controls_Move;
     private readonly InputAction m_Controls_Yaw;
     private readonly InputAction m_Controls_SpeedUp;
+    private readonly InputAction m_Controls_Attack;
     /// <summary>
     /// Provides access to input actions defined in input action map "Controls".
     /// </summary>
@@ -401,6 +434,10 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Controls/SpeedUp".
         /// </summary>
         public InputAction @SpeedUp => m_Wrapper.m_Controls_SpeedUp;
+        /// <summary>
+        /// Provides access to the underlying input action "Controls/Attack".
+        /// </summary>
+        public InputAction @Attack => m_Wrapper.m_Controls_Attack;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -436,6 +473,9 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
             @SpeedUp.started += instance.OnSpeedUp;
             @SpeedUp.performed += instance.OnSpeedUp;
             @SpeedUp.canceled += instance.OnSpeedUp;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
         }
 
         /// <summary>
@@ -456,6 +496,9 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
             @SpeedUp.started -= instance.OnSpeedUp;
             @SpeedUp.performed -= instance.OnSpeedUp;
             @SpeedUp.canceled -= instance.OnSpeedUp;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
         }
 
         /// <summary>
@@ -543,5 +586,12 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSpeedUp(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Attack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnAttack(InputAction.CallbackContext context);
     }
 }

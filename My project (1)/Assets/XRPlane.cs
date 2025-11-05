@@ -54,6 +54,16 @@ public class XRPlane : MonoBehaviour
     [SerializeField] InputActionReference pitchroll;
     [SerializeField] InputActionReference yaw;
     [SerializeField] InputActionReference speed;
+
+    [SerializeField] InputActionReference attack;
+
+    public GameObject bulletPrefab;
+    public Transform bulletpoint;
+    public float bulletspeed = 50f;
+
+
+    public bool isAttacking = false;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -72,6 +82,7 @@ public class XRPlane : MonoBehaviour
         pitchroll.action.Enable();
         yaw.action.Enable();
         speed.action.Enable();
+        attack.action.Enable();
     }
 
     void OnDisable()
@@ -79,6 +90,7 @@ public class XRPlane : MonoBehaviour
         pitchroll.action.Disable();
         yaw.action.Disable();
         speed.action.Disable();
+        attack.action.Disable();
     }
 
     public void Move1()
@@ -111,6 +123,20 @@ public class XRPlane : MonoBehaviour
         //     Debug.Log("Boost activated!");
         //
         // }
+    }
+    public void Attack()
+    {
+        if (attack.action.WasPerformedThisFrame() && bulletPrefab != null && bulletpoint != null)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, bulletpoint.position, bulletpoint.rotation);
+            Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
+            if (bulletRb != null)
+                bulletRb.velocity = bulletpoint.forward * bulletspeed;
+
+            isAttacking = true;
+        }
+        else
+            isAttacking = false;
     }
 
     public void OnMoveInput(InputAction.CallbackContext context)
@@ -149,6 +175,11 @@ public class XRPlane : MonoBehaviour
 
         }
     }
+
+
+    public bool IsBoosting() {
+        return isBoosting;
+    }
     //public void OnThrottleIncrease(InputAction.CallbackContext context) //type - button
     //{
     //    if (context.performed)
@@ -176,6 +207,9 @@ public class XRPlane : MonoBehaviour
         Move1();
         Yaw();
         Speed();
+
+        Attack();
+
         float pitch = -moveInput.y * pitchSensitivity * Time.fixedDeltaTime; //������ �����,����
         float roll = -moveInput.x * rollSensitivity * Time.fixedDeltaTime; // (������ �������)
         float yaw = yawInput.x * yawSensitivity * Time.fixedDeltaTime; //������� �������� ������ ������������ ���

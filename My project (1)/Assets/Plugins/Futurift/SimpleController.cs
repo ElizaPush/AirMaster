@@ -13,6 +13,8 @@ namespace Futurift
         [SerializeField] private string ipAddress = "127.0.0.1";
         [SerializeField] private int port = 6065;
 
+        
+
         private FutuRiftController _controller;
 
         private void Awake()
@@ -41,10 +43,16 @@ namespace Futurift
         private float accelPitchOffset;
         private float smoothedAccelTilt;
 
-        public float accelerationSensitivity = 0.6f;
-        public float maxAccelerationTilt = 6f;
-        [Range(0f, 1f)] public float accelerationSmooth = 0.8f;
+        public float accelerationSensitivity = 1.5f; //0.6f;
+        public float maxAccelerationTilt = 12f; //6f;
+        [Range(0f, 1f)] public float accelerationSmooth = 0.2f;  // 0.8f;
 
+        public float collisionTiltForce = 18f; //8f;  //сила(угол) наклона капсулы при столкновении (вперед)
+        public float collisionRecoverySpeed = 4f;
+        public float collisionThreshold = 1.0f; //минимальная сила столкновения
+
+        private float collisionTilt;
+        private float targetCollisionTilt;
 
         private void Update()
         {
@@ -83,10 +91,25 @@ namespace Futurift
             float acceleration = (currentSpeed - lastSpeed) / Time.deltaTime;
             lastSpeed = currentSpeed;
 
-            float accelTilt = Mathf.Clamp(-Mathf.Pow(Mathf.Abs(acceleration), 0.7f) * Mathf.Sign(acceleration) * accelerationSensitivity, -maxAccelerationTilt, maxAccelerationTilt);
-            smoothedAccelTilt = Mathf.Lerp(smoothedAccelTilt, accelTilt, 1f - accelerationSmooth);
+            float accelTilt = Mathf.Clamp(-Mathf.Pow(Mathf.Abs(acceleration), 0.9f) * Mathf.Sign(acceleration) * accelerationSensitivity, -maxAccelerationTilt, maxAccelerationTilt);
 
-            float totalPitch = -rot.x - smoothedAccelTilt;
+            float accelChange = Mathf.Abs(accelTilt - smoothedAccelTilt);
+            if (accelChange > 0.1f)   //ускорение резко изменилось 
+            {
+                smoothedAccelTilt = Mathf.Lerp(smoothedAccelTilt, accelTilt, 0.5f);
+            }
+            else
+            {
+                smoothedAccelTilt = Mathf.Lerp(smoothedAccelTilt, accelTilt, 1f - accelerationSmooth);
+            }
+
+            collisionTilt = Mathf.Lerp(collisionTilt, targetCollisionTilt, Time.deltaTime * collisionRecoverySpeed);
+            if (Mathf.Abs(targetCollisionTilt) > 0.01f && Mathf.Abs(collisionTilt - targetCollisionTilt) < 0.1f)
+                targetCollisionTilt = 0f;
+
+
+            float totalPitch = -rot.x - smoothedAccelTilt + collisionTilt;
+            //float totalPitch = -rot.x - smoothedAccelTilt;
             //float totalPitch = -rot.x + smoothedAccelTilt;
             // === отклонение капсулы при ускорении ===
             //accelPitchOffset = Mathf.Lerp(accelPitchOffset, Mathf.Clamp(-acceleration * 0.2f, -10f, 10f), 0.1f);
@@ -157,6 +180,23 @@ namespace Futurift
             //_controller.Pitch = (euler.x > 180 ? euler.x - 360 : euler.x);
             //_controller.Roll = (euler.z > 180 ? euler.z - 360 : euler.z);
         }
+
+        //реакция на столкновение 
+        private void OnCollisionEnter(Collision collision)
+        {
+            float impactForce = collision.relativeVelocity.magnitude;
+            Debug.Log($"Столкновение с объектом: {collision.gameObject.name}, сила удара: {impactForce:F2}");
+
+            targetCollisionTilt = -collisionTiltForce;
+            Debug.Log($"Реакция на столкновение активирована, наклон: {targetCollisionTilt:F2}");
+
+            //if (impactForce > collisionThreshold) 
+            //{
+            //    targetCollisionTilt = -Mathf.Clamp(impactForce, 0f, 10f) / 10f * collisionTiltForce;
+            //    Debug.Log($"Реакция на столкновение активирована, наклон: {targetCollisionTilt:F2}");
+            //}
+        }
+
 
         private void OnEnable()
         {
