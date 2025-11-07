@@ -22,7 +22,7 @@ public class BhapticsController : MonoBehaviour
     private bool rollTriggered = false;
     private bool accelTriggered = false;
     
-    private bool sharpTurnTriggered = false;
+    //private bool sharpTurnTriggered = false;
     private bool boostTriggered = false;
     private bool initialized = false; //чтобы не было вибрации сразу после старта
     private bool attackTriggered = false;
@@ -128,34 +128,69 @@ public class BhapticsController : MonoBehaviour
     }
 
     // === 5/6. Столкновение и посадка===
+    //void OnCollisionEnter(Collision collision)
+    //{
+    //    if (!initialized) return;
+
+        
+    //     float impactForce = collision.relativeVelocity.magnitude;
+
+    //     float intensity = Mathf.Clamp(impactForce / maxCollisionForce, 0.1f, 1f);
+
+    //     Connect("collision", intensity);
+
+            
+    //}
+
+
+
     void OnCollisionEnter(Collision collision)
     {
         if (!initialized) return;
 
-        
-         float impactForce = collision.relativeVelocity.magnitude;
 
-         float intensity = Mathf.Clamp(impactForce / maxCollisionForce, 0.1f, 1f);
+        float impactForce = collision.relativeVelocity.magnitude;
 
-         Connect("collision", intensity);
+        float intensity = Mathf.Clamp(impactForce / maxCollisionForce, 0.1f, 1f);
 
-            
-    }
-    private void DetectLanding() 
-    {
-        wasGrounded = isGrounded;
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
-        if (!wasGrounded && isGrounded)
+        string tag = collision.gameObject.tag;
+        switch(tag)
         {
-            float verticalSpeed = Mathf.Abs(rb.velocity.y);
-            if (verticalSpeed > landingVelocityThreshold)
-            {
-                float intensity = Mathf.Clamp01(verticalSpeed / 20f);
-                TriggerHaptic("landing", intensity);
-                //Debug.Log($"Landing: {verticalSpeed:F2}, Intensity: {intensity: F2}");
-            }
+            case "Ground": //posadka
+                Landing("land collision", intensity);
+
+                break;
+            case "house": //dom
+              
+                
+                Connect("collision", intensity);
+
+                
+                break;
+            default:
+                Connect("collision", intensity);
+                break;
         }
+
+       
+
+
     }
+    //private void DetectLanding() 
+    //{
+    //    wasGrounded = isGrounded;
+    //    isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
+    //    if (!wasGrounded && isGrounded)
+    //    {
+    //        float verticalSpeed = Mathf.Abs(rb.velocity.y);
+    //        if (verticalSpeed > landingVelocityThreshold)
+    //        {
+    //            float intensity = Mathf.Clamp01(verticalSpeed / 20f);
+    //            TriggerHaptic("landing", intensity);
+    //            //Debug.Log($"Landing: {verticalSpeed:F2}, Intensity: {intensity: F2}");
+    //        }
+    //    }
+    //}
 
     private void TriggerHaptic(string eventName, float intensity = 1f)
     {
@@ -204,6 +239,14 @@ public class BhapticsController : MonoBehaviour
     {
         intensity = Mathf.Clamp01(intensity);
         BhapticsLibrary.Play("dash"); //default jacket
+        Debug.Log($"Haptic Triggered: {eventName} (intensity: {intensity:F2})");
+
+    }
+
+    private void Landing(string eventName, float intensity = 1f)
+    {
+        intensity = Mathf.Clamp01(intensity);
+        BhapticsLibrary.Play("posadka"); //my jacket
         Debug.Log($"Haptic Triggered: {eventName} (intensity: {intensity:F2})");
 
     }

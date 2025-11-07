@@ -32,5 +32,7 @@ namespace Bhaptics.SDK2
         public const string ALL = "all";
         
         public const string FIRE = "fire";
+        
+        public const string POSADKA = "posadka";
     }
 }

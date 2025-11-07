@@ -103,9 +103,25 @@ namespace Futurift
                 smoothedAccelTilt = Mathf.Lerp(smoothedAccelTilt, accelTilt, 1f - accelerationSmooth);
             }
 
+            //столкновение
             collisionTilt = Mathf.Lerp(collisionTilt, targetCollisionTilt, Time.deltaTime * collisionRecoverySpeed);
             if (Mathf.Abs(targetCollisionTilt) > 0.01f && Mathf.Abs(collisionTilt - targetCollisionTilt) < 0.1f)
                 targetCollisionTilt = 0f;
+
+            //угловая скорость
+            var rb = GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                Vector3 angularVelDeg = rb.angularVelocity * Mathf.Rad2Deg;
+
+                float rollFromAngular = Mathf.Clamp(angularVelDeg.z / sensitivity, -maxAngle, maxAngle);
+                float pitchFromAngular = Mathf.Clamp(-angularVelDeg.x / sensitivity, -maxAngle, maxAngle);
+
+                rot.z += rollFromAngular * Time.deltaTime;
+                rot.x += pitchFromAngular * Time.deltaTime;
+
+
+            }
 
 
             float totalPitch = -rot.x - smoothedAccelTilt + collisionTilt;

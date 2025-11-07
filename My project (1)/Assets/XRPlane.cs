@@ -43,6 +43,7 @@ public class XRPlane : MonoBehaviour
 
     [SerializeField] AudioSource engineAudio;
     [SerializeField] AudioSource boostAudio;
+    [SerializeField] AudioSource attackAudio;
 
     public float minPitch = 0.8f;
     public float maxPitch = 2.0f;
@@ -132,6 +133,10 @@ public class XRPlane : MonoBehaviour
             Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
             if (bulletRb != null)
                 bulletRb.velocity = bulletpoint.forward * bulletspeed;
+            if (attackAudio != null)
+            {
+                attackAudio.Play();
+            }
 
             isAttacking = true;
         }
