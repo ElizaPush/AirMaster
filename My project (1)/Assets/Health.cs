@@ -5,6 +5,7 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     public int currentHealth = 100;
+    public int healAmount = 3;
    
    
     void Update()
@@ -18,7 +19,18 @@ public class Health : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            HealAirplane();
             Destroy(this.gameObject);
+        }
+    }
+
+    void HealAirplane()
+    {
+        AirplaneHealth airplaneHealth = FindObjectOfType<AirplaneHealth>();
+
+        if (airplaneHealth != null)
+        {
+            airplaneHealth.Heal(healAmount);
         }
     }
 }
