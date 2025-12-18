@@ -84,7 +84,7 @@ public class FlyingEnemy : MonoBehaviour
         if (fireTimer <= 0f)
         {
             Debug.Log("Attacking");
-            Fire();
+            //Fire();
             fireTimer = fireCooldown;
         }
     }
@@ -106,18 +106,19 @@ public class FlyingEnemy : MonoBehaviour
     //}
 
     // ========== SHOOTING ==========
-    void Fire()
-    {
-        //GameObject bulletObj = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+    //void Fire()
+    //{
+    //    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation); //сама€ последн€€ верси€
+    //    //GameObject bulletObj = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
 
-        //Bulletmove bullet1 = bulletObj.GetComponent<Bulletmove>();
 
-        //bullet.SetDirection(firePoint.forward);
-        //GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        //Instantiate(bulletPrefab, firePoint.position,
-        //firePoint.rotation * Quaternion.Euler(90, 0, 0));
+    //    //Bulletmove bullet1 = bulletObj.GetComponent<Bulletmove>();
 
-        //bullet.transform.rotation *= Quaternion.Euler(90, 0, 0);
-    }
+    //    //bullet.SetDirection(firePoint.forward);
+    //    //GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+    //    //Instantiate(bulletPrefab, firePoint.position,
+    //    //firePoint.rotation * Quaternion.Euler(90, 0, 0));
+
+    //    //bullet.transform.rotation *= Quaternion.Euler(90, 0, 0);
+    //}
 }

@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Losing.unity
     guid: 0c38566dc6861b4448301157aa93cca2
+  - enabled: 1
+    path: Assets/Scenes/Winning.unity
+    guid: c7ccc71e082512743bf69869ce5e3577
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 0f1df4533482c6343b223c6bd9ae5fb6, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: c783fe025fde37c4b8a9217155b4aee0, type: 2}

@@ -10,6 +10,6 @@ public class bull : MonoBehaviour
     void Update()
     {
         //transform.Translate(Vector3.forward * speed * Time.deltaTime); //перемещение
-        Destroy(gameObject, 0.5f);
+        //Destroy(gameObject, 0.5f); //была эта строчка включена
     }
 }

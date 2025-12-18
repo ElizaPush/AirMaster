@@ -12,14 +12,16 @@ public class damagescript : MonoBehaviour
     {
         if(other.tag == "house") {
             other.GetComponent<Health>().TakeDamage(damageAmount);
+            Destroy(gameObject); //уничтожение пули
         }
 
         else if (other.CompareTag("opponent"))
         {
-            EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
+            EnemyHealth enemyHealth = other.GetComponentInParent<EnemyHealth>();
             if (enemyHealth != null)
             {
                 enemyHealth.TakeDamage(enemyDamage);
+                Destroy(gameObject); //уничтожение пули
             }
         }
     }

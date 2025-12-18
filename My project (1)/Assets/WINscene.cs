@@ -7,6 +7,6 @@ public class WINscene : MonoBehaviour
 {
     public void OnCollisionEnter(Collision collision)
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(3);
     }
 }
